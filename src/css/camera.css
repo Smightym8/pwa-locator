@@ -1,3 +1,7 @@
+html {
+    background-color: black;
+}
+
 input#save {
     width: 48px;
     height: 48px;
@@ -11,17 +15,6 @@ input#save {
 
 input#save:disabled {
     filter: opacity(0.50);
-}
-
-input#pause {
-    width: 48px;
-    height: 48px;
-    background-color: #3388FFCC;
-    border-radius: 50%;
-    border: 4px solid #3388FFFF;
-    padding: 8px;
-    margin-left: auto;
-    margin-right: 24px;
 }
 
 input#pause-play {
@@ -38,7 +31,6 @@ input#pause-play {
 input#pause-play:disabled {
     filter: opacity(0.50);
 }
-
 
 input#cancel {
     width: 48px;
