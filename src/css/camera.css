@@ -21,28 +21,6 @@ div.h-safe-area-inset-top {
     background-color: #00000044;
 }
 
-#content {
-    width: 100vw;
-    height: 100vh;
-    position:relative;
-}
-
-#video{
-    max-width: 100%;
-    left: 50%;
-    top: 50%;
-    transform:translate(-50%,-50%);
-    position: absolute;
-}
-
-#photo {
-    max-width: 100%;
-    left: 50%;
-    top: 50%;
-    transform:translate(-50%,-50%);
-    position: absolute;
-}
-
 div.footer {
     display: flex;
     align-items: center;
@@ -66,9 +44,19 @@ input#save {
     border-radius: 25%;
     border: 4px solid #3388FFFF;
     padding: 8px;
+    display: none;
 }
 
-input#save:disabled {
+input#change-camera {
+    width: 48px;
+    height: 48px;
+    background-color: #3388FFCC;
+    border-radius: 25%;
+    border: 4px solid #3388FFFF;
+    padding: 8px;
+}
+
+input#change-camera:disabled {
     filter: opacity(0.50);
 }
 
@@ -98,19 +86,4 @@ input#cancel {
     display: flex;
     flex-flow: column wrap;
     align-items: center;
-}
-
-#location-left {
-    margin-left: 1em;
-    margin-right: auto;
-}
-
-#location-middle {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#location-right {
-    margin-left: auto;
-    margin-right: 1em;
 }
