@@ -1,22 +1,37 @@
-import cameraImage from "../assets/camera.svg";
+import cancelImage from "../assets/x-circle.svg";
+import saveImage from "../assets/save.svg";
+import pauseImage from "../assets/pause-btn.svg";
+import playImage from "../assets/play-btn.svg";
 
 // This will be computed based on the input stream
 let streaming = false; //flag for a 1st-time init
 const video = document.getElementById('video');
 const photo = document.getElementById('photo');
-const cameraButton = document.getElementById('camera');
+const cancelButton = document.getElementById('cancel');
+const saveButton = document.getElementById('save');
+const pausePlayButton = document.getElementById('pause-play');
 
-//start video playback
-navigator.mediaDevices.getUserMedia(
-    { video: true, audio: false }
-)
-.then((stream) => {
-    video.srcObject = stream;
-    video.play();
-})
-.catch((err) => {
-    console.error(`An error occurred: ${err}`);
-});
+function startVideoPlayback() {
+    //start video playback
+    navigator.mediaDevices.getUserMedia(
+        { video: true, audio: false }
+    )
+        .then((stream) => {
+            video.srcObject = stream;
+            video.play().then(() => {
+                pausePlayButton.addEventListener("click", takePicture);
+                pausePlayButton.disabled = false;
+                saveButton.disabled = true;
+            });
+            pausePlayButton.src = pauseImage;
+            pausePlayButton.removeEventListener("click", startVideoPlayback);
+            photo.style.display = "none";
+            video.style.display = "block";
+        })
+        .catch((err) => {
+            console.error(`An error occurred: ${err}`);
+        });
+}
 
 function takePicture(event) {
     const width = video.offsetWidth;
@@ -36,10 +51,28 @@ function takePicture(event) {
             photo.src = imageData;
         }
     );
+
+    video.style.display = "none";
+    photo.style.display = "block";
+    pausePlayButton.src = playImage;
+    pausePlayButton.removeEventListener("click", takePicture);
+    pausePlayButton.addEventListener("click", startVideoPlayback);
+
+    saveButton.disabled = false;
+}
+
+function backToMap() {
+    location.href = "/";
 }
 
 /* setup component */
 window.onload = () => {
-    cameraButton.addEventListener("click", takePicture);
-    cameraButton.src = cameraImage;
+    cancelButton.src = cancelImage;
+    cancelButton.addEventListener("click", backToMap);
+
+    saveButton.src = saveImage;
+
+    pausePlayButton.src = pauseImage;
+
+    startVideoPlayback();
 }

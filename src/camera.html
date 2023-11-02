@@ -11,15 +11,23 @@
     <link rel="manifest" href="manifest.json">
     <script src="js/camera.js" type="module"></script>
     <link rel="stylesheet" href="css/locator.css">
+    <link rel="stylesheet" href="css/camera.css">
 
     <title>The Locator</title>
 </head>
 <body>
     <video id="video">Video stream not available.</video>
-    <img id="photo" alt="The screen capture will appear in this box." />
+    <img id="photo" />
 
     <div class="footer">
-        <input id="camera" type="image">
+        <div id="location-left">
+            <input id="save" type="image" alt="A save icon" disabled="disabled">
+        </div>
+        <div id="location-middle">
+            <input id="pause-play" type="image" alt="A pause or play icon" disabled>
+        </div>
+
+        <input id="cancel" type="image" alt="A x circle icon">
     </div>
 </body>
 </html>
