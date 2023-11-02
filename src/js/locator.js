@@ -13,6 +13,7 @@ var map;
 var ranger;
 var geolocation;
 var watcherId;
+var cameraButton;
 
 function isTouchDevice() {
     return (('ontouchstart' in window) ||
@@ -35,6 +36,8 @@ function configureMap(latLngArray) {
 }
 
 function updatePosition(position) {
+    cameraButton.disabled = false;
+
     const locatorLeftDiv = document.getElementById(LOCATION_LEFT_ID);
     const locatorMiddleDiv = document.getElementById(LOCATION_MIDDLE_ID);
 
@@ -67,22 +70,28 @@ function updatePosition(position) {
 }
 
 function handleErr(err) {
+    cameraButton.disabled = true;
     console.error(err.message);
+}
+
+function onCameraButtonClicked() {
+    location.href = "/camera.html"
 }
 
 /* setup component */
 window.onload = () => {
-    const cameraButton = document.getElementById(CAMERA_INPUT_ID);
+    cameraButton = document.getElementById(CAMERA_INPUT_ID);
     const queryParams = new URLSearchParams(window.location.search);
 
     //setup UI
     cameraButton.src = cameraImage;
+    cameraButton.addEventListener("click", onCameraButtonClicked);
 
     //init leaflet
     configureMap([47.406653, 9.744844]);
 
     //init footer
-    updatePosition({ coords: { latitude: 47.406653, longitude: 9.744844, altitude: 440, accuracy: 40, heading: 45, speed: 1.8 } });
+    //updatePosition({ coords: { latitude: 47.406653, longitude: 9.744844, altitude: 440, accuracy: 40, heading: 45, speed: 1.8 } });
 
     // setup service worker
     const swDisbaled = (queryParams.get('service-worker') === 'disabled');
