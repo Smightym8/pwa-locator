@@ -10,12 +10,16 @@
 
     <link rel="manifest" href="manifest.json">
     <script src="js/camera.js" type="module"></script>
-    <link rel="stylesheet" href="css/locator.css">
     <link rel="stylesheet" href="css/camera.css">
 
     <title>The Locator</title>
 </head>
 <body>
+    <!-- area used eg by iOS for status icons and the notch / dynamic island -->
+    <div class="safe-area">
+        <div class="h-safe-area-inset-top"></div>
+    </div>
+
     <video id="video">Video stream not available.</video>
     <img id="photo" />
 
@@ -26,8 +30,9 @@
         <div id="location-middle">
             <input id="pause-play" type="image" alt="A pause or play icon" disabled>
         </div>
-
-        <input id="cancel" type="image" alt="A x circle icon">
+        <div id="location-right">
+            <input id="cancel" type="image" alt="A x circle icon">
+        </div>
     </div>
 </body>
 </html>
