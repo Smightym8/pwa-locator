@@ -21,12 +21,21 @@ div.h-safe-area-inset-top {
     background-color: #00000044;
 }
 
+#content {
+    padding-top: 15em;
+}
+
+#video {
+    max-width: 100%;
+    height: auto;
+}
+
 div.footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-top: 1em;
-    padding-bottom: 1em;
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
     z-index: 2;
     position: fixed;
     bottom: 0px;
@@ -41,7 +50,7 @@ input#save {
     width: 48px;
     height: 48px;
     background-color: #3388FFCC;
-    border-radius: 50%;
+    border-radius: 25%;
     border: 4px solid #3388FFFF;
     padding: 8px;
 }
@@ -54,7 +63,7 @@ input#pause-play {
     width: 48px;
     height: 48px;
     background-color: #3388FFCC;
-    border-radius: 50%;
+    border-radius: 25%;
     border: 4px solid #3388FFFF;
     padding: 8px;
 }
@@ -67,7 +76,7 @@ input#cancel {
     width: 48px;
     height: 48px;
     background-color: #3388FFCC;
-    border-radius: 50%;
+    border-radius: 25%;
     border: 4px solid #3388FFFF;
     padding: 8px;
 }
