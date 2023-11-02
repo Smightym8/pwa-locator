@@ -22,12 +22,25 @@ div.h-safe-area-inset-top {
 }
 
 #content {
-    padding-top: 15em;
+    width: 100vw;
+    height: 100vh;
+    position:relative;
 }
 
-#video {
+#video{
     max-width: 100%;
-    height: auto;
+    left: 50%;
+    top: 50%;
+    transform:translate(-50%,-50%);
+    position: absolute;
+}
+
+#photo {
+    max-width: 100%;
+    left: 50%;
+    top: 50%;
+    transform:translate(-50%,-50%);
+    position: absolute;
 }
 
 div.footer {
