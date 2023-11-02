@@ -11,6 +11,8 @@ const CAMERA_INPUT_ID = 'camera';
 //map state
 var map;
 var ranger;
+var geolocation;
+var watcherId;
 
 function isTouchDevice() {
     return (('ontouchstart' in window) ||
@@ -64,6 +66,10 @@ function updatePosition(position) {
     ranger.setRadius(coords.accuracy);
 }
 
+function handleErr(err) {
+    console.error(err.message);
+}
+
 /* setup component */
 window.onload = () => {
     const cameraButton = document.getElementById(CAMERA_INPUT_ID);
@@ -93,4 +99,22 @@ window.onload = () => {
         });
     }
 
+    if ('geolocation' in navigator) {
+        /* geolocation is available */
+        const options = {
+            enableHighAccuracy: true,
+            maximumAge: 30000,
+            timeout: 27000
+        };
+
+        geolocation = navigator.geolocation;
+        watcherId = geolocation.watchPosition(updatePosition, handleErr, options);
+    }
 }
+
+window.onbeforeunload = (event) => {
+    if (geolocation) {
+        geolocation.clearWatch(watcherId);
+    }
+};
+
