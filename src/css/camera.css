@@ -21,6 +21,17 @@ div.h-safe-area-inset-top {
     background-color: #00000044;
 }
 
+#content {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    padding-top: 15em;
+}
+
+#video, #photo {
+    max-width: 100%;
+}
+
 div.footer {
     display: flex;
     align-items: center;
