@@ -18,7 +18,7 @@ let stream;
 async function startVideoPlayback() {
     //start video playback
     try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false });
 
         video.srcObject = stream;
         video.play();
