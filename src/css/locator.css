@@ -88,3 +88,13 @@ input#camera {
 input#camera:disabled {
     filter: opacity(0.50);
 }
+
+.popup-container {
+    text-align: center;
+}
+
+.popup-text {
+    background: rgba(255, 255, 255, 0.5);
+    color: #000;
+    margin: 2px;
+}

@@ -1,4 +1,7 @@
 import cameraImage from '../assets/camera.svg';
+import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
+import marker from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const COORD_FORMATTER = Intl.NumberFormat('de-DE', { minimumFractionDigits: 6, maximumFractionDigits: 6, minimumIntegerDigits: 3, style: 'unit', unit: 'degree' });
 const DIST_FORMATTER = Intl.NumberFormat('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1, style: 'unit', unit: 'meter' });
@@ -34,6 +37,30 @@ function configureMap(latLngArray) {
         attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
     ranger = L.circle(latLngArray, { radius: 20.0 }).addTo(map);
+
+    // Add marker for each saved photo in localStorage
+    const markerIcon = new L.Icon.Default({
+        iconUrl: marker,
+        iconRetinaUrl: marker2x,
+        shadowUrl: markerShadow
+    });
+
+    for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+        let coords = key.split('x');
+        let longitude = coords[0];
+        let latitude = coords[1];
+        let photo = localStorage.getItem(key);
+
+        L.marker([latitude, longitude], { icon: markerIcon }).addTo(map)
+            .bindPopup(`
+                <div class="popup-container">
+                    <img src='${photo}' width='150px' alt="Marker Image">
+                    <div class="popup-text">Latitude: ${latitude}</div>
+                    <div class="popup-text">Longitude: ${longitude}</div>
+                </div>
+            `);
+    }
 }
 
 function updatePosition(position) {
