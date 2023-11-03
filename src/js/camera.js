@@ -24,11 +24,6 @@ async function getAvailableCameras() {
         return camera.kind === 'videoinput' && !camera.label.includes('OBS');
     });
 
-    // To debug on mobile phone
-    mediaDevices.forEach((mediaDevice) => {
-        alert(`${mediaDevice.label}, ${mediaDevice.kind}, ${mediaDevice.deviceId}`);
-    });
-
     cameras = mediaDevices;
 }
 
@@ -117,6 +112,11 @@ window.onload = async () => {
 
     changeCameraButton.src = changeCameraImage;
     changeCameraButton.addEventListener('click', changeCamera);
+
+    // Firefox support on mobile phone
+    navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia;
 
     await getAvailableCameras();
 
