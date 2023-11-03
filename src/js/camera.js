@@ -15,6 +15,7 @@ const changeCameraButton = document.getElementById('change-camera');
 
 let cameras = [];
 let currentCameraIndex = 0;
+let stream;
 
 async function getAvailableCameras() {
     let mediaDevices = await navigator.mediaDevices.enumerateDevices();
@@ -31,32 +32,33 @@ async function getAvailableCameras() {
     cameras = mediaDevices;
 }
 
-function startVideoPlayback() {
+async function startVideoPlayback() {
     //start video playback
     let currentDeviceId = cameras[currentCameraIndex].deviceId;
-    navigator.mediaDevices.getUserMedia(
-        { video: {deviceId: {exact: currentDeviceId } } }
-    )
-        .then((stream) => {
-            video.srcObject = stream;
-            video.play().then(() => {
-                pausePlayButton.addEventListener("click", takePicture);
-                pausePlayButton.disabled = false;
-                saveButton.disabled = true;
-                changeCameraButton.style.display = "block";
-                saveButton.style.display = "none";
-            });
 
-            pausePlayButton.src = pauseImage;
-            pausePlayButton.removeEventListener("click", startVideoPlayback);
-            photo.style.display = "none";
-            video.style.display = "block";
-        })
-        .catch((err) => {
-            // To debug on mobile phone
-            alert(`An error occurred: ${err}`);
-            console.error(`An error occurred: ${err}`);
+    try {
+        stream = await navigator.mediaDevices.getUserMedia(
+            {video: {deviceId: {exact: currentDeviceId}}}
+        );
+
+        video.srcObject = stream;
+        video.play().then(() => {
+            pausePlayButton.addEventListener("click", takePicture);
+            pausePlayButton.disabled = false;
+            saveButton.disabled = true;
+            changeCameraButton.style.display = "block";
+            saveButton.style.display = "none";
         });
+
+        pausePlayButton.src = pauseImage;
+        pausePlayButton.removeEventListener("click", startVideoPlayback);
+        photo.style.display = "none";
+        video.style.display = "block";
+    } catch (err) {
+        // To debug on mobile phone
+        alert(`An error occurred: ${err}`);
+        console.error(`An error occurred: ${err}`);
+    }
 }
 
 function takePicture(event) {
@@ -85,17 +87,23 @@ function takePicture(event) {
     pausePlayButton.src = playImage;
     pausePlayButton.removeEventListener("click", takePicture);
     pausePlayButton.addEventListener("click", startVideoPlayback);
-
     saveButton.disabled = false;
+
+    stopVideoStream();
 }
 
-function changeCamera() {
+async function changeCamera() {
     currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
-    startVideoPlayback();
+    stopVideoStream();
+    await startVideoPlayback();
 }
 
 function backToMap() {
     location.href = "/";
+}
+
+function stopVideoStream() {
+    stream.getTracks().forEach((track) => track.stop());
 }
 
 /* setup component */
@@ -117,5 +125,5 @@ window.onload = async () => {
         changeCameraButton.disabled = false;
     }
 
-    startVideoPlayback();
+    await startVideoPlayback();
 }
