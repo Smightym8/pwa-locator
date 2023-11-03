@@ -23,6 +23,10 @@ async function getAvailableCameras() {
         return camera.kind === 'videoinput' && !camera.label.includes('OBS');
     });
 
+    // To debug on mobile phone
+    mediaDevices.forEach((mediaDevice) => {
+        alert(`${mediaDevice.label}, ${mediaDevice.kind}, ${mediaDevice.deviceId}`);
+    });
 
     cameras = mediaDevices;
 }
@@ -49,6 +53,8 @@ function startVideoPlayback() {
             video.style.display = "block";
         })
         .catch((err) => {
+            // To debug on mobile phone
+            alert(`An error occurred: ${err}`);
             console.error(`An error occurred: ${err}`);
         });
 }
