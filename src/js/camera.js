@@ -24,6 +24,12 @@ async function getAvailableCameras() {
         return camera.kind === 'videoinput' && !camera.label.includes('OBS');
     });
 
+    alert(`Found ${mediaDevices.length} cameras.`);
+
+    mediaDevices.forEach((device) => {
+        alert(`${device.kind}: ${device.label} id = ${device.deviceId}`);
+    });
+
     cameras = mediaDevices;
 }
 
@@ -52,6 +58,8 @@ async function startVideoPlayback() {
     } catch (err) {
         // To debug on mobile phone
         alert(`An error occurred: ${err}`);
+        const device = cameras[currentCameraIndex];
+        alert(`${device.kind}: ${device.label} id = ${device.deviceId}`);
         console.error(`An error occurred: ${err}`);
     }
 }
@@ -112,11 +120,6 @@ window.onload = async () => {
 
     changeCameraButton.src = changeCameraImage;
     changeCameraButton.addEventListener('click', changeCamera);
-
-    // Firefox support on mobile phone
-    navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia;
 
     await getAvailableCameras();
 
