@@ -58,19 +58,9 @@ input#save {
     border-radius: 25%;
     border: 4px solid #3388FFFF;
     padding: 8px;
-    display: none;
 }
 
-input#change-camera {
-    width: 48px;
-    height: 48px;
-    background-color: #3388FFCC;
-    border-radius: 25%;
-    border: 4px solid #3388FFFF;
-    padding: 8px;
-}
-
-input#change-camera:disabled {
+input#save:disabled {
     filter: opacity(0.50);
 }
 

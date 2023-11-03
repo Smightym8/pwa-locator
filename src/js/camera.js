@@ -2,7 +2,6 @@ import cancelImage from "../assets/x-circle.svg";
 import saveImage from "../assets/save.svg";
 import pauseImage from "../assets/pause-btn.svg";
 import playImage from "../assets/play-btn.svg";
-import changeCameraImage from "../assets/arrow-repeat.svg";
 
 // This will be computed based on the input stream
 let streaming = false; //flag for a 1st-time init
@@ -11,43 +10,22 @@ const photo = document.getElementById('photo');
 const cancelButton = document.getElementById('cancel');
 const saveButton = document.getElementById('save');
 const pausePlayButton = document.getElementById('pause-play');
-const changeCameraButton = document.getElementById('change-camera');
 
 const reader = new FileReader();
-
 let canvasImgBlob;
-let cameras = [];
-let currentCameraIndex = 0;
 let stream;
-
-async function getAvailableCameras() {
-    let mediaDevices = await navigator.mediaDevices.enumerateDevices();
-
-    mediaDevices = mediaDevices.filter((camera) => {
-        return camera.kind === 'videoinput' && !camera.label.includes('OBS');
-    });
-
-    cameras = mediaDevices;
-}
 
 async function startVideoPlayback() {
     //start video playback
-    let currentDeviceId = cameras[currentCameraIndex].deviceId;
-
     try {
-        stream = await navigator.mediaDevices.getUserMedia(
-            {video: {deviceId: {exact: currentDeviceId}}}
-        );
+        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
 
         video.srcObject = stream;
-        video.play().then(() => {
-            pausePlayButton.addEventListener("click", takePicture);
-            pausePlayButton.disabled = false;
-            saveButton.disabled = true;
-            changeCameraButton.style.display = "block";
-            saveButton.style.display = "none";
-        });
+        video.play();
 
+        pausePlayButton.addEventListener("click", takePicture);
+        pausePlayButton.disabled = false;
+        saveButton.disabled = true;
         pausePlayButton.src = pauseImage;
         pausePlayButton.removeEventListener("click", startVideoPlayback);
         photo.style.display = "none";
@@ -76,8 +54,6 @@ function takePicture(event) {
 
     video.style.display = "none";
     photo.style.display = "block";
-    changeCameraButton.style.display = "none";
-    saveButton.style.display = "block";
     pausePlayButton.src = playImage;
     pausePlayButton.removeEventListener("click", takePicture);
     pausePlayButton.addEventListener("click", startVideoPlayback);
@@ -91,13 +67,6 @@ function savePhoto() {
     backToMap();
 }
 
-async function changeCamera() {
-    // TODO: Fix firefox bug
-    currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
-    stopVideoStream();
-    await startVideoPlayback();
-}
-
 function stopVideoStream() {
     stream.getTracks().forEach((track) => track.stop());
 }
@@ -107,7 +76,7 @@ function backToMap() {
 }
 
 /* setup component */
-window.onload = async () => {
+window.onload = () => {
     cancelButton.src = cancelImage;
     cancelButton.addEventListener("click", backToMap);
 
@@ -116,20 +85,10 @@ window.onload = async () => {
 
     pausePlayButton.src = pauseImage;
 
-    changeCameraButton.src = changeCameraImage;
-    changeCameraButton.addEventListener('click', changeCamera);
-
     reader.onloadend = function() {
         let id = localStorage.length + 1;
         localStorage.setItem(`photo-${id}`, reader.result);
     }
 
-    await getAvailableCameras();
-
-    // Enable button if there are multiple cameras
-    if (cameras.length > 1) {
-        changeCameraButton.disabled = false;
-    }
-
-    await startVideoPlayback();
+    startVideoPlayback();
 }
