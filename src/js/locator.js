@@ -9,11 +9,12 @@ const LOCATION_MIDDLE_ID = 'location-middle';
 const CAMERA_INPUT_ID = 'camera';
 
 //map state
-var map;
-var ranger;
-var geolocation;
-var watcherId;
-var cameraButton;
+let map;
+let ranger;
+let geolocation;
+let watcherId;
+let cameraButton;
+let currentPosition;
 
 function isTouchDevice() {
     return (('ontouchstart' in window) ||
@@ -37,6 +38,7 @@ function configureMap(latLngArray) {
 
 function updatePosition(position) {
     cameraButton.disabled = false;
+    currentPosition = position;
 
     const locatorLeftDiv = document.getElementById(LOCATION_LEFT_ID);
     const locatorMiddleDiv = document.getElementById(LOCATION_MIDDLE_ID);
@@ -75,7 +77,8 @@ function handleErr(err) {
 }
 
 function onCameraButtonClicked() {
-    location.href = "/camera.html"
+    const coords = currentPosition.coords;
+    location.href = `/camera.html?lng=${encodeURIComponent(coords.longitude)}&lat=${encodeURIComponent(coords.latitude)}`;
 }
 
 /* setup component */

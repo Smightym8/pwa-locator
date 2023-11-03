@@ -86,8 +86,10 @@ window.onload = () => {
     pausePlayButton.src = pauseImage;
 
     reader.onloadend = function() {
-        let id = localStorage.length + 1;
-        localStorage.setItem(`photo-${id}`, reader.result);
+        const urlParams = new URLSearchParams(window.location.search);
+        const longitude = urlParams.get('lng');
+        const latitude = urlParams.get('lat');
+        localStorage.setItem(`${longitude}x${latitude}`, reader.result);
     }
 
     startVideoPlayback();
