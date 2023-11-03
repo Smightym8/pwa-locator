@@ -72,7 +72,16 @@ function stopVideoStream() {
 }
 
 function backToMap() {
-    location.href = "/";
+    const { longitude, latitude } = getUrlParams();
+    location.href = `/?lng=${encodeURIComponent(longitude)}&lat=${encodeURIComponent(latitude)}`;
+}
+
+function getUrlParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const longitude = urlParams.get('lng');
+    const latitude = urlParams.get('lat');
+
+    return {longitude: longitude, latitude: latitude} ;
 }
 
 /* setup component */
@@ -86,9 +95,7 @@ window.onload = () => {
     pausePlayButton.src = pauseImage;
 
     reader.onloadend = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const longitude = urlParams.get('lng');
-        const latitude = urlParams.get('lat');
+        const { longitude, latitude } = getUrlParams();
         localStorage.setItem(`${longitude}x${latitude}`, reader.result);
     }
 

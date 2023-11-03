@@ -108,6 +108,14 @@ function onCameraButtonClicked() {
     location.href = `/camera.html?lng=${encodeURIComponent(coords.longitude)}&lat=${encodeURIComponent(coords.latitude)}`;
 }
 
+function getUrlParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const longitude = urlParams.get('lng');
+    const latitude = urlParams.get('lat');
+
+    return {longitude: longitude, latitude: latitude} ;
+}
+
 /* setup component */
 window.onload = () => {
     cameraButton = document.getElementById(CAMERA_INPUT_ID);
@@ -117,11 +125,22 @@ window.onload = () => {
     cameraButton.src = cameraImage;
     cameraButton.addEventListener("click", onCameraButtonClicked);
 
+    // Try to get coords from searchParam
+    let latitude = 47.406653;
+    let longitude = 9.744844;
+
+    const { longitudeUrlParam, latitudeUrlParam } = getUrlParams();
+
+    if (!isNaN(longitudeUrlParam) && !isNaN(latitudeUrlParam)) {
+        latitude = latitudeUrlParam;
+        longitude = longitudeUrlParam;
+    }
+
     //init leaflet
-    configureMap([47.406653, 9.744844]);
+    configureMap([latitude, longitude]);
 
     //init footer
-    //updatePosition({ coords: { latitude: 47.406653, longitude: 9.744844, altitude: 440, accuracy: 40, heading: 45, speed: 1.8 } });
+    updatePosition({ coords: { latitude: latitude, longitude: longitude, altitude: 440, accuracy: 40, heading: 45, speed: 1.8 } });
 
     // setup service worker
     const swDisbaled = (queryParams.get('service-worker') === 'disabled');
