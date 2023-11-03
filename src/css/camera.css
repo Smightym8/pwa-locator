@@ -27,7 +27,6 @@ div.h-safe-area-inset-top {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    margin-bottom: 2em;
 }
 
 #video, #photo {
@@ -45,6 +44,7 @@ div.footer {
     position: fixed;
     bottom: 0px;
     width: 100vw;
+    margin-top: 2em;
 }
 
 div.footer>div {

@@ -13,6 +13,9 @@ const saveButton = document.getElementById('save');
 const pausePlayButton = document.getElementById('pause-play');
 const changeCameraButton = document.getElementById('change-camera');
 
+const reader = new FileReader();
+
+let canvasImgBlob;
 let cameras = [];
 let currentCameraIndex = 0;
 let stream;
@@ -61,8 +64,6 @@ function takePicture(event) {
     const context = canvas.getContext('2d');
     context.drawImage(video, 0, 0, width, height);
 
-    let canvasImgBlob;
-
     canvas.convertToBlob({ type: 'image/jpeg' }).then(
         (blob) => {
             canvasImgBlob = blob;
@@ -85,6 +86,11 @@ function takePicture(event) {
     stopVideoStream();
 }
 
+function savePhoto() {
+    reader.readAsDataURL(canvasImgBlob);
+    backToMap();
+}
+
 async function changeCamera() {
     // TODO: Fix firefox bug
     currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
@@ -92,12 +98,12 @@ async function changeCamera() {
     await startVideoPlayback();
 }
 
-function backToMap() {
-    location.href = "/";
-}
-
 function stopVideoStream() {
     stream.getTracks().forEach((track) => track.stop());
+}
+
+function backToMap() {
+    location.href = "/";
 }
 
 /* setup component */
@@ -106,11 +112,17 @@ window.onload = async () => {
     cancelButton.addEventListener("click", backToMap);
 
     saveButton.src = saveImage;
+    saveButton.addEventListener("click", savePhoto);
 
     pausePlayButton.src = pauseImage;
 
     changeCameraButton.src = changeCameraImage;
     changeCameraButton.addEventListener('click', changeCamera);
+
+    reader.onloadend = function() {
+        let id = localStorage.length + 1;
+        localStorage.setItem(`photo-${id}`, reader.result);
+    }
 
     await getAvailableCameras();
 
