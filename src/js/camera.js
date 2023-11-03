@@ -24,12 +24,6 @@ async function getAvailableCameras() {
         return camera.kind === 'videoinput' && !camera.label.includes('OBS');
     });
 
-    alert(`Found ${mediaDevices.length} cameras.`);
-
-    mediaDevices.forEach((device) => {
-        alert(`${device.kind}: ${device.label} id = ${device.deviceId}`);
-    });
-
     cameras = mediaDevices;
 }
 
@@ -56,10 +50,6 @@ async function startVideoPlayback() {
         photo.style.display = "none";
         video.style.display = "block";
     } catch (err) {
-        // To debug on mobile phone
-        alert(`An error occurred: ${err}`);
-        const device = cameras[currentCameraIndex];
-        alert(`${device.kind}: ${device.label} id = ${device.deviceId}`);
         console.error(`An error occurred: ${err}`);
     }
 }
@@ -96,6 +86,7 @@ function takePicture(event) {
 }
 
 async function changeCamera() {
+    // TODO: Fix firefox bug
     currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
     stopVideoStream();
     await startVideoPlayback();
