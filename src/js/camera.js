@@ -10,6 +10,7 @@ const photo = document.getElementById('photo');
 const cancelButton = document.getElementById('cancel');
 const saveButton = document.getElementById('save');
 const pausePlayButton = document.getElementById('pause-play');
+const videoErrorText = document.getElementById('video-error-text');
 
 const reader = new FileReader();
 let canvasImgBlob;
@@ -36,6 +37,7 @@ async function startVideoPlayback() {
         photo.style.display = "none";
         video.style.display = "block";
     } catch (err) {
+        videoErrorText.style.display = "block";
         console.error(`An error occurred: ${err}`);
     }
 }

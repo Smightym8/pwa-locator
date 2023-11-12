@@ -34,6 +34,12 @@ div.h-safe-area-inset-top {
     max-height: 100%;
 }
 
+#video-error-text {
+    color: white;
+    font-size: 2em;
+    display: none;
+}
+
 div.footer {
     display: flex;
     align-items: center;
