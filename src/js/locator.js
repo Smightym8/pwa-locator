@@ -55,8 +55,6 @@ function configureMap(latLngArray) {
             .bindPopup(`
                 <div class="popup-container">
                     <img src='${photo}' width='150px' alt="Marker Image">
-                    <div class="popup-text">Latitude: ${latitude}</div>
-                    <div class="popup-text">Longitude: ${longitude}</div>
                 </div>
             `);
 

@@ -92,9 +92,3 @@ input#camera:disabled {
 .popup-container {
     text-align: center;
 }
-
-.popup-text {
-    background: rgba(255, 255, 255, 0.5);
-    color: #000;
-    margin: 2px;
-}
