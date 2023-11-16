@@ -3,8 +3,6 @@ import saveImage from "../assets/save.svg";
 import pauseImage from "../assets/pause-btn.svg";
 import playImage from "../assets/play-btn.svg";
 
-// This will be computed based on the input stream
-let streaming = false; //flag for a 1st-time init
 const video = document.getElementById('video');
 const photo = document.getElementById('photo');
 const cancelButton = document.getElementById('cancel');
@@ -43,29 +41,42 @@ async function startVideoPlayback() {
 }
 
 function drawText(context, text, textFontSize, pictureWidth, pictureHeight) {
-    let textMetrics = context.measureText(text);
     context.font = `${textFontSize}px serif`;
     context.fillStyle = 'rgb(0, 0, 0)';
-    context.textAlign = "center";
-    context.textBaseline = "bottom";
-    let textPosition = {x:  (pictureWidth / 2), y: pictureHeight - 2};
+
+    const textWidth = context.measureText(text).width;
+    const textPosition = {
+        x:  (pictureWidth - textWidth) / 2,
+        y: pictureHeight - textFontSize - 2
+    };
 
     context.fillText(text, textPosition.x, textPosition.y);
 }
 
 function drawRectangle(context, text, textFontSize, pictureWidth, pictureHeight) {
     let textMetrics = context.measureText(text);
-    console.log(textMetrics.width);
     context.fillStyle = 'rgba(255, 255, 255, 0.5)';
+
+    const rectanglePosition = {
+        x: (pictureWidth / 2) - textMetrics.width,
+        y: pictureHeight - (textFontSize * 2)
+    };
+
+    const rectangleSize = {
+        width: (textMetrics.width * 2) - 4,
+        height: textFontSize + 4
+    };
+
+    // Position the rectangle in the bottom center of the picture
     context.fillRect(
-        ((pictureWidth / 2) - (textMetrics.width / 2)),
-        pictureHeight - (textFontSize + 4),
-        textMetrics.width,
-        (textFontSize + 2)
+        rectanglePosition.x,
+        rectanglePosition.y,
+        rectangleSize.width,
+        rectangleSize.height
     );
 }
 
-function takePicture(event) {
+function takePicture() {
     const width = video.offsetWidth;
     const height = video.offsetHeight;
     const canvas = new OffscreenCanvas(width, height);

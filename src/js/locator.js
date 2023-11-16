@@ -46,7 +46,6 @@ function configureMap(latLngArray) {
     });
 
     Object.keys(localStorage).forEach((key) => {
-        // TODO: Use canvas to write coord on image
         let coords = key.split('x');
         let longitude = coords[0];
         let latitude = coords[1];
@@ -171,7 +170,7 @@ window.onload = () => {
     }
 }
 
-window.onbeforeunload = (event) => {
+window.onbeforeunload = () => {
     if (geolocation) {
         geolocation.clearWatch(watcherId);
     }
