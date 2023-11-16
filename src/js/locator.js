@@ -45,7 +45,8 @@ function configureMap(latLngArray) {
         shadowUrl: markerShadow
     });
 
-    Object.keys(localStorage).forEach(function(key){
+    Object.keys(localStorage).forEach((key) => {
+        // TODO: Use canvas to write coord on image
         let coords = key.split('x');
         let longitude = coords[0];
         let latitude = coords[1];
@@ -59,6 +60,7 @@ function configureMap(latLngArray) {
                     <div class="popup-text">Longitude: ${longitude}</div>
                 </div>
             `);
+
     });
 }
 

@@ -29,11 +29,11 @@ async function startVideoPlayback() {
         video.srcObject = stream;
         video.play();
 
+        pausePlayButton.removeEventListener("click", startVideoPlayback);
         pausePlayButton.addEventListener("click", takePicture);
         pausePlayButton.disabled = false;
         saveButton.disabled = true;
         pausePlayButton.src = pauseImage;
-        pausePlayButton.removeEventListener("click", startVideoPlayback);
         photo.style.display = "none";
         video.style.display = "block";
     } catch (err) {
@@ -42,12 +42,42 @@ async function startVideoPlayback() {
     }
 }
 
+function drawText(context, text, textFontSize, pictureWidth, pictureHeight) {
+    let textMetrics = context.measureText(text);
+    context.font = `${textFontSize}px serif`;
+    context.fillStyle = 'rgb(0, 0, 0)';
+    context.textAlign = "center";
+    context.textBaseline = "bottom";
+    let textPosition = {x:  (pictureWidth / 2), y: pictureHeight - 2};
+
+    context.fillText(text, textPosition.x, textPosition.y);
+}
+
+function drawRectangle(context, text, textFontSize, pictureWidth, pictureHeight) {
+    let textMetrics = context.measureText(text);
+    console.log(textMetrics.width);
+    context.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    context.fillRect(
+        ((pictureWidth / 2) - (textMetrics.width / 2)),
+        pictureHeight - (textFontSize + 4),
+        textMetrics.width,
+        (textFontSize + 2)
+    );
+}
+
 function takePicture(event) {
     const width = video.offsetWidth;
     const height = video.offsetHeight;
     const canvas = new OffscreenCanvas(width, height);
     const context = canvas.getContext('2d');
     context.drawImage(video, 0, 0, width, height);
+
+    const { longitude, latitude } = getUrlParams();
+    let text = `${longitude}x${latitude}`;
+    let textFontSize = 18;
+
+    drawRectangle(context, text, textFontSize, width, height);
+    drawText(context, text, textFontSize, width, height);
 
     canvas.convertToBlob({ type: 'image/jpeg' }).then(
         (blob) => {
@@ -88,7 +118,7 @@ function getUrlParams() {
     const longitude = urlParams.get('lng');
     const latitude = urlParams.get('lat');
 
-    return {longitude: longitude, latitude: latitude} ;
+    return {longitude: longitude, latitude: latitude};
 }
 
 /* setup component */
