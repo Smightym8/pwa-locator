@@ -45,8 +45,7 @@ function configureMap(latLngArray) {
         shadowUrl: markerShadow
     });
 
-    for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
+    Object.keys(localStorage).forEach(function(key){
         let coords = key.split('x');
         let longitude = coords[0];
         let latitude = coords[1];
@@ -60,7 +59,7 @@ function configureMap(latLngArray) {
                     <div class="popup-text">Longitude: ${longitude}</div>
                 </div>
             `);
-    }
+    });
 }
 
 function updatePosition(position) {
