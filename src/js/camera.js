@@ -40,31 +40,30 @@ async function startVideoPlayback() {
     }
 }
 
-function drawText(context, text, textFontSize, pictureWidth, pictureHeight) {
-    context.font = `${textFontSize}px serif`;
+function drawText(context, text, textFontSize, pictureWidth, pictureHeight, offsetFromBottom) {
     context.fillStyle = 'rgb(0, 0, 0)';
 
     const textWidth = context.measureText(text).width;
     const textPosition = {
         x:  (pictureWidth - textWidth) / 2,
-        y: pictureHeight - textFontSize - 2
+        y: pictureHeight - textFontSize - offsetFromBottom
     };
 
     context.fillText(text, textPosition.x, textPosition.y);
 }
 
-function drawRectangle(context, text, textFontSize, pictureWidth, pictureHeight) {
+function drawRectangle(context, text, textFontSize, pictureWidth, pictureHeight, padding) {
     let textMetrics = context.measureText(text);
     context.fillStyle = 'rgba(255, 255, 255, 0.5)';
 
     const rectanglePosition = {
-        x: (pictureWidth / 2) - textMetrics.width,
+        x: (pictureWidth / 2) - (textMetrics.width / 2) - padding,
         y: pictureHeight - (textFontSize * 2)
     };
 
     const rectangleSize = {
-        width: (textMetrics.width * 2) - 4,
-        height: textFontSize + 4
+        width:  textMetrics.width + (padding * 2),
+        height: textFontSize + (padding * 2)
     };
 
     // Position the rectangle in the bottom center of the picture
@@ -86,9 +85,10 @@ function takePicture() {
     const { longitude, latitude } = getUrlParams();
     let text = `${longitude}x${latitude}`;
     let textFontSize = 18;
+    context.font = `${textFontSize}px serif`;
 
-    drawRectangle(context, text, textFontSize, width, height);
-    drawText(context, text, textFontSize, width, height);
+    drawRectangle(context, text, textFontSize, width, height, 2);
+    drawText(context, text, textFontSize, width, height, 2);
 
     canvas.convertToBlob({ type: 'image/jpeg' }).then(
         (blob) => {
